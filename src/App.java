@@ -1,9 +1,3 @@
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import db.DB;
 import model.dao.DaoFactory;
 import model.dao.GenericDao;
 import model.entities.Seller;
@@ -12,26 +6,11 @@ public class App {
 
     public static void main(String[] args) {
 
-        Connection conn = null;
-        Statement st = null;
-        ResultSet rs = null;
+        GenericDao<Seller> sellerDao = DaoFactory.createSellerDao();
 
-        try {
-            conn = DB.getConnection();
+        Seller seller = sellerDao.findById(3);
 
-            st = conn.createStatement();
+        System.out.println(seller);
 
-            rs = st.executeQuery("select * from department");
-
-            while (rs.next()) {
-                System.out.println(rs.getInt("Id") + ", " + rs.getString("Name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DB.closeResultSet(rs);
-            DB.closeStatement(st);
-            DB.closeConnection();
-        }
     }
 }
