@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import model.dao.DaoFactory;
 import model.dao.GenericDao;
 import model.entities.Department;
@@ -5,6 +7,8 @@ import model.entities.Department;
 public class App2 {
 
     public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
 
         GenericDao<Department> departmentDao = DaoFactory.createDepartmentDao();
 
@@ -23,5 +27,12 @@ public class App2 {
         departmentDao.update(dep2);
         System.out.println("Update completed");
 
+        System.out.println("\n=== TEST 4: delete =======");
+        System.out.print("Enter id for delete test: ");
+        int id = sc.nextInt();
+        departmentDao.deleteById(id);
+        System.out.println("Delete completed");
+
+        sc.close();
     }
 }
