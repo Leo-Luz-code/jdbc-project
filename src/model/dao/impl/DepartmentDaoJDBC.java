@@ -59,11 +59,12 @@ public class DepartmentDaoJDBC implements GenericDao<Department> {
 
         try {
             st = conn.prepareStatement(
-                    "UPDATE seller "
+                    "UPDATE department "
                             + "SET Name = ? "
                             + "WHERE Id = ?");
 
             st.setString(1, obj.getName());
+            st.setInt(2, obj.getId());
 
             st.executeUpdate();
 
@@ -76,20 +77,50 @@ public class DepartmentDaoJDBC implements GenericDao<Department> {
 
     @Override
     public void deleteById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+
     }
 
     @Override
     public Department findById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "SELECT * "
+                            + "FROM department "
+                            + "WHERE Id = ?");
+
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                Department dep = instantiateDepartment(rs);
+
+                return dep;
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 
     @Override
     public List<Department> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("Id"));
+        dep.setName(rs.getString("Name"));
+        return dep;
     }
 
 }
