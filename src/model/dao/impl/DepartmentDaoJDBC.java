@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DBException;
 import model.dao.GenericDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class DepartmentDaoJDBC implements GenericDao<Department> {
 
@@ -122,8 +126,27 @@ public class DepartmentDaoJDBC implements GenericDao<Department> {
 
     @Override
     public List<Department> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement("SELECT * FROM department");
+
+            rs = st.executeQuery();
+
+            List<Department> list = new ArrayList<>();
+
+            while (rs.next()) {
+                Department dep = instantiateDepartment(rs);
+
+                list.add(dep);
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 
     private Department instantiateDepartment(ResultSet rs) throws SQLException {
