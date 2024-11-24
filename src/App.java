@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import db.DB;
+import model.dao.DaoFactory;
+import model.dao.GenericDao;
+import model.entities.Seller;
 
 public class App {
 
