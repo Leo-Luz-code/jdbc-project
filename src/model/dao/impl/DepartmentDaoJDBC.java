@@ -54,6 +54,7 @@ public class DepartmentDaoJDBC implements GenericDao<Department> {
 
     @Override
     public void update(Department obj) {
+
         PreparedStatement st = null;
 
         try {
@@ -71,7 +72,6 @@ public class DepartmentDaoJDBC implements GenericDao<Department> {
         } finally {
             DB.closeStatement(st);
         }
-
     }
 
     @Override
